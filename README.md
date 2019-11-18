@@ -9,3 +9,5 @@
 [spring数据库连接官方文档]https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-embedded-database-support
 
 [Mybatis官方文档]http://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/
+
+[flyway Migration]https://flywaydb.org/getstarted/firststeps/maven

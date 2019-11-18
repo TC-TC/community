@@ -93,6 +93,13 @@
                     <user>root</user>
                     <password>1234</password>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>8.0.18</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
