@@ -1,0 +1,17 @@
+1.在publish.html里面的form表单里面填写一个action（表示提交表单时向何处发送表单数据），以post方式来发送。
+
+当填写好数据提交后，会自动寻找路由，并且方法为post的接口
+送到了PulishController里面
+[form表单]https://baijiahao.baidu.com/s?id=1631481433493074116&wfr=spider&for=pc
+
+2.通过@RequestParam来接受参数。
+  (1)首先放到model中（可以将获得的数据返回到publish.html中显示）
+  [model] https://blog.csdn.net/yongwa123/article/details/85017551
+
+  (2)验证一下是不是为空，为空的话就报错放入error，显示在publish.html。
+
+  (3)接下来验证是否已经登陆，若未登陆报错放入error,显示在publish.html。
+
+  (4)如果全部工作，先构建一个question对象，将获得的数据放入对象当中。
+
+  (5)通过@Mapper的方式将question对象当中的数据存入数据库。

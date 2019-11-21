@@ -1,15 +1,22 @@
 package life.tc.community.model;
 
-
 public class User {
     private Integer id;
     private String name;
     private String accountId;
     private String token;
-    //创建时间
+    private String bio;
     private Long gmtCreate;
-    //修改时间
     private Long gmtModified;
+    private String avatarUrl;
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
 
     public Integer getId() {
         return id;
@@ -57,5 +64,13 @@ public class User {
 
     public void setGmtModified(Long gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

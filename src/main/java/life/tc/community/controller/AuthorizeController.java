@@ -34,9 +34,8 @@ public class AuthorizeController {
     private UserMapper userMapper;
 
     @GetMapping("/callback")
-    public String callback(@RequestParam(name="code") String code,
-                           @RequestParam(name="state") String state,
-                           HttpServletRequest request,
+    public String callback(@RequestParam(value="code") String code,
+                           @RequestParam(value="state") String state,
                            HttpServletResponse response)  throws IOException {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setCode(code);
@@ -46,7 +45,7 @@ public class AuthorizeController {
         accessTokenDTO.setRedirect_uri(redirectUri);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
-        if(githubUser != null){
+        if(githubUser != null && githubUser.getId() != null){
             //将获取到的用户信息存入数据库
             User user = new User();
             String token = UUID.randomUUID().toString();
@@ -55,6 +54,8 @@ public class AuthorizeController {
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setAvatarUrl(githubUser.getAvatar_url());
+            user.setBio(githubUser.getBio());
             userMapper.insert(user);
             //将生成的token放入cooike中，在访问首页时，将cooike中token的信息拿到放入数据库中检查是否登录成功
             response.addCookie(new Cookie("token",token));
