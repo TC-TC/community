@@ -1,0 +1,10 @@
+1.在indexController return前得到问题发布的数据即可，用model即可将拿到的数据放到前端。
+
+2.在questionMapper中先拿到数据库中的所有数据
+
+3.在拿到数据之后，问题数据库的头像并没有获取，此时需要将question的creator关联成user表中的
+ID，就需要question对象里有一个user对象，就用一个新对象questionDTO来实现（属性跟question对象一样，多了一个user对象）
+
+4.但是questionMapper里面的list方法返回的时question对象，所以就需要一个sevice层来处理这种情况，
+加一个questionSevice，在这里面可以将questionMapper和userMapper组装起来，在这里面定义一个list()来返回questionDTO对象即可
+用循环，将每个question对象放入到questionDTO对象中。
