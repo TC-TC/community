@@ -5,6 +5,7 @@ import life.tc.community.dto.GithubUser;
 import life.tc.community.mapper.UserMapper;
 import life.tc.community.model.User;
 import life.tc.community.provider.GithubProvider;
+import life.tc.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,8 +31,9 @@ public class AuthorizeController {
     @Value("${github.redirect.uri}")
     private String redirectUri;
 
+
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(value="code") String code,
@@ -52,11 +54,10 @@ public class AuthorizeController {
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
-            user.setAvatarUrl(githubUser.getAvatar_url());
             user.setBio(githubUser.getBio());
-            userMapper.insert(user);
+            user.setAvatarUrl(githubUser.getAvatar_url());
+            //如果通过数据库能查到User的accountID,就只需要将更新的token放进user中
+            userService.createOrUpdate(user);
             //将生成的token放入cooike中，在访问首页时，将cooike中token的信息拿到放入数据库中检查是否登录成功
             response.addCookie(new Cookie("token",token));
 
@@ -67,4 +68,14 @@ public class AuthorizeController {
         }
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response
+    ){
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
+    }
 }

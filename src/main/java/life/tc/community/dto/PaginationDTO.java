@@ -23,23 +23,9 @@ public class PaginationDTO {
 
 
     //关于页面上的一些逻辑
-    public void setPagination(Integer totalCount, Integer page, Integer size) {
+    public void setPagination(Integer totalPage, Integer page) {
 
-        //计算总共需要多少页
-        if(totalCount % size == 0) {
-            this.totalPage = totalCount / size;
-        }
-        else{
-            this.totalPage = totalCount / size + 1;
-        }
-
-
-        if(page <1){
-            page = 1;
-        }
-        if(page > this.totalPage) {
-            page = this.totalPage;
-        }
+        this.totalPage = totalPage;
 
         this.page = page;
 
