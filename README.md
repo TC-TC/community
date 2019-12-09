@@ -2,6 +2,8 @@
 
 [模仿网站]https://elasticsearch.cn/
 
+[spring-boot官方文档]https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/
+
 [Maven-jar依赖下载地址]https://mvnrepository.com/
 
 [前端集成bootstrap使用]https://v3.bootcss.com/
@@ -23,3 +25,7 @@
 [拦截器]https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#mvc-config-interceptors
 
 [Mybatis Generator]http://mybatis.org/generator/
+
+[异常处理]https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-error-handling
+
+[JS异步使用post]https://api.jquery.com/jQuery.post/

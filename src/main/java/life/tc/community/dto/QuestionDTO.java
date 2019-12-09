@@ -4,23 +4,23 @@ package life.tc.community.dto;
 import life.tc.community.model.User;
 
 public class QuestionDTO {
-    private int id;
+    private long id;
     private String title;
     private String description;
     private String tag;
     private Long gmtCreate;
     private Long gmtModified;
-    private Integer creator;
+    private Long creator;
     private Integer commentCount;
     private Integer viewCount;
     private Integer likeCount;
     private User user;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -64,11 +64,11 @@ public class QuestionDTO {
         this.gmtModified = gmtModified;
     }
 
-    public Integer getCreator() {
+    public Long getCreator() {
         return creator;
     }
 
-    public void setCreator(Integer creator) {
+    public void setCreator(Long creator) {
         this.creator = creator;
     }
 

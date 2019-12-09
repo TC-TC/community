@@ -1,6 +1,4 @@
 package life.tc.community.controller;
-
-
 import life.tc.community.dto.QuestionDTO;
 import life.tc.community.mapper.QuestionMapper;
 import life.tc.community.model.Question;
@@ -24,7 +22,7 @@ public class PublishController {
     private QuestionService questionService;
 
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id") Integer id,
+    public String edit(@PathVariable(name = "id") Long id,
                        Model model
     ){
         QuestionDTO question = questionService.getById(id);
@@ -45,7 +43,7 @@ public class PublishController {
     @RequestParam(value = "title", required = false) String title,
     @RequestParam(value = "description", required = false) String description,
     @RequestParam(value = "tag", required = false) String tag,
-    @RequestParam(value = "id", required = false) Integer id,
+    @RequestParam(value = "id",required = false) Long id,
     HttpServletRequest request,
     Model model
     ){

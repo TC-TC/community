@@ -2,6 +2,10 @@ package life.tc.community.service;
 
 import life.tc.community.dto.PaginationDTO;
 import life.tc.community.dto.QuestionDTO;
+import life.tc.community.exception.CustomErrorCode;
+import life.tc.community.exception.CustomizeException;
+import life.tc.community.exception.ICustomizeErrorCode;
+import life.tc.community.mapper.QuestionExtMapper;
 import life.tc.community.mapper.QuestionMapper;
 import life.tc.community.mapper.UserMapper;
 import life.tc.community.model.Question;
@@ -24,6 +28,8 @@ public class QuestionService {
     private  QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     //index页面的问题显示
     public PaginationDTO list(Integer page, Integer size) {
@@ -70,7 +76,7 @@ public class QuestionService {
     }
 
     //profile页面的问题显示
-    public PaginationDTO list(Integer userId, Integer page, Integer size) {
+    public PaginationDTO list(long userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
 
         //问题所有的数量
@@ -121,8 +127,13 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public QuestionDTO getById(Integer id) {
+    //获取question详情
+    public QuestionDTO getById(long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if(question == null)
+        {
+            throw new CustomizeException(CustomErrorCode.QUESTION_NOT_FOUND);
+        }
         User user = userMapper.selectByPrimaryKey(question.getCreator());
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setUser(user);
@@ -130,11 +141,15 @@ public class QuestionService {
         return questionDTO;
     }
 
+    //更新question
     public void createOrUpdate(Question question) {
         if(question.getId() == null) {
             //创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setViewCount(0);
+            question.setLikeCount(0);
+            question.setCommentCount(0);
             questionMapper.insert(question);
         }else{
             //更新
@@ -147,20 +162,21 @@ public class QuestionService {
             QuestionExample example = new QuestionExample();
             example.createCriteria()
                     .andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updateQuestion,example);
+            //判断是否在跟你更新之前该问题还存在（有可能被删除）
+            int updated = questionMapper.updateByExampleSelective(updateQuestion,example);
+            if(updated != 1){
+                throw new CustomizeException(CustomErrorCode.QUESTION_NOT_FOUND);
+            }
         }
 
     }
 
 
     //实现了阅读数量加一
-    public void incView(Integer id) {
-        Question question = questionMapper.selectByPrimaryKey(id);
-        Question updateQuestion = new Question();
-        updateQuestion.setViewCount(question.getViewCount() + 1);
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.createCriteria()
-                .andIdEqualTo(id);
-        questionMapper.updateByExampleSelective(updateQuestion,questionExample);
+    public void incView(long id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }

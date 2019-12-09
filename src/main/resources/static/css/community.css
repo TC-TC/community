@@ -24,3 +24,17 @@
 .community-menu{
     color: #999;
 }
+
+.jumbotron{
+    margin:50px;
+}
+
+.comment{
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.btn-comment{
+    float: right;
+    margin-bottom: 10px;
+}
