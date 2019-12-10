@@ -1,9 +1,9 @@
 package life.tc.community.controller;
 
 
+import life.tc.community.dto.CommentCreateDTO;
+import life.tc.community.dto.CommentDTO;
 import life.tc.community.dto.QuestionDTO;
-import life.tc.community.mapper.QuestionMapper;
-import life.tc.community.model.Comment;
 import life.tc.community.service.CommentService;
 import life.tc.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import java.util.List;
 
 @Controller
 public class QuestionController {
@@ -28,9 +28,12 @@ public class QuestionController {
                            Model model
     ){
         QuestionDTO questionDTO = questionService.getById(id);
+
+        List<CommentDTO> comments =  commentService.listByQuestionId(id);
         //累加阅读数
         questionService.incView(id);
         model.addAttribute("question",questionDTO);
+        model.addAttribute("comments",comments);
         return "question";
     }
 
