@@ -21,6 +21,13 @@
 .profile .section{
     margin-top: 15px;
 }
+
+.question-title{
+    margin-top: 25px;
+}
+
+
+
 .community-menu{
     display: block;
     color: #999;
@@ -46,6 +53,10 @@
     margin-bottom: 15px;
     border-bottom: 1px solid #eee;
     padding-bottom: 5px;
+}
+
+.comment-sp{
+    margin-top: 0px;
 }
 
 .menu{
