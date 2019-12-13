@@ -1,7 +1,9 @@
 package life.tc.community.controller;
 
 import life.tc.community.dto.CommentCreateDTO;
+import life.tc.community.dto.CommentDTO;
 import life.tc.community.dto.ResultDTO;
+import life.tc.community.enums.CommentTypeEnum;
 import life.tc.community.exception.CustomErrorCode;
 import life.tc.community.model.Comment;
 import life.tc.community.model.User;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -41,5 +44,13 @@ public class CommentController {
         comment.setLikeCount(0L);
         commentService.insert(comment);
         return ResultDTO.okOf();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/comment/{id}",method = RequestMethod.GET)
+    public  ResultDTO<List<CommentDTO>> comments(@PathVariable(name = "id") Long id) {
+        List<CommentDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
+        //返回的json对象还带有一个commentDTOS对象
+        return ResultDTO.okOf(commentDTOS);
     }
 }

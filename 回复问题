@@ -11,3 +11,11 @@
 同样回复内容也是同样的方法。
 
 再通过js的post方法将这些值传到前端，让CommentController能够拿到
+
+
+提交二级评论
+1.question.html点击评论进入community.js的点击响应函数comment
+2.comment()通过重构函数comment2target将评论Post到服务器端
+3.服务器端的commentController通过@RequestMapping的GET方法拿到具体评论的ID号
+4.对ID号还有评论类型的枚举用listByTargetId()返回一个评论列表
+5.在listByTargetId()里面对具体一级评论的所有二级评论进行去重，按时间排序等操作

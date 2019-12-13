@@ -3,9 +3,10 @@ package life.tc.community.dto;
 import life.tc.community.exception.CustomErrorCode;
 import life.tc.community.exception.CustomizeException;
 
-public class ResultDTO {
+public class ResultDTO<T>{
     private Integer code;
     private String message;
+    private T data;
 
     //请求失败返回的问题
     public static ResultDTO errorOf(Integer code,String message){
@@ -30,6 +31,14 @@ public class ResultDTO {
         return resultDTO;
     }
 
+    public static <T> ResultDTO okOf(T t){
+        ResultDTO resultDTO = new ResultDTO();
+        resultDTO.setCode(200);
+        resultDTO.setMessage("请求成功");
+        resultDTO.setData(t);
+        return resultDTO;
+    }
+
 
 
     public Integer getCode() {
@@ -46,5 +55,13 @@ public class ResultDTO {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }
