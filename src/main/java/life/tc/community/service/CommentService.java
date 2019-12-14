@@ -4,10 +4,7 @@ import life.tc.community.dto.CommentDTO;
 import life.tc.community.enums.CommentTypeEnum;
 import life.tc.community.exception.CustomErrorCode;
 import life.tc.community.exception.CustomizeException;
-import life.tc.community.mapper.CommentMapper;
-import life.tc.community.mapper.QuestionExtMapper;
-import life.tc.community.mapper.QuestionMapper;
-import life.tc.community.mapper.UserMapper;
+import life.tc.community.mapper.*;
 import life.tc.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +33,9 @@ public class CommentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private CommentExtMapper commentExtMapper;
+
     @Transactional
     //加上事务框架，当一个语句执行失败时，所有语句全部回滚
     public void insert(Comment comment) {
@@ -57,6 +57,11 @@ public class CommentService {
                 throw new CustomizeException(CustomErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            //增加二级评论数
+            Comment parentComment = new Comment();
+            parentComment.setId(comment.getParentId());
+            parentComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(parentComment);
         } else {
             //回复问题（为一级评论，此时parent_ID为发帖人ID）
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());

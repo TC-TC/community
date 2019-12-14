@@ -26,6 +26,8 @@
 
 [Mybatis Generator]http://mybatis.org/generator/
 
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+
 [异常处理]https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-error-handling
 
 [JS异步使用post]https://api.jquery.com/jQuery.post/
