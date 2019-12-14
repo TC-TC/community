@@ -58,8 +58,10 @@ public class QuestionService {
 
         //size*(page-1),offset为每页第一个问题的编号
         Integer offset = size * (page-1);
+        QuestionExample example = new QuestionExample();
+        example.setOrderByClause("gmt_create desc");
         //List<Question> questions = questionMapper.list(offset,size);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(),new RowBounds(offset,size));
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example,new RowBounds(offset,size));
 
         List<QuestionDTO> questionDTOlist = new ArrayList<>();
         for(Question question : questions){
