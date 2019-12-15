@@ -1,5 +1,6 @@
 package life.tc.community.service;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.util.QDecoderStream;
 import life.tc.community.dto.PaginationDTO;
 import life.tc.community.dto.QuestionDTO;
 import life.tc.community.exception.CustomErrorCode;
@@ -11,6 +12,7 @@ import life.tc.community.mapper.UserMapper;
 import life.tc.community.model.Question;
 import life.tc.community.model.QuestionExample;
 import life.tc.community.model.User;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,9 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Null;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -180,5 +184,30 @@ public class QuestionService {
         question.setId(id);
         question.setViewCount(1);
         questionExtMapper.incView(question);
+    }
+
+    public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
+        if(StringUtils.isBlank(queryDTO.getTag())){
+            return new ArrayList<>();
+        }
+        //将问题标签以,分隔放进tags中
+        String[] tags  = StringUtils.split(queryDTO.getTag(),",");
+
+        //对这些tags再用|拼接得到一个regexpTag(因为正则表达式里面要右“|”来表示或)
+        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+
+        //将拼接好的tag放进一个question内
+        Question question = new Question();
+        question.setId(queryDTO.getId());
+        question.setTag(regexpTag);
+
+        List<Question> questions = questionExtMapper.selectRelated(question);
+        //最后将得到的questions转化成questionDTOs
+        List<QuestionDTO> questionDTOS = questions.stream().map(q->{
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q,questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        return questionDTOS;
     }
 }

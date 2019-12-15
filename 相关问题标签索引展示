@@ -1,0 +1,9 @@
+通过标签的索引来展示相关问题
+
+例如
+select id,title,tag from question where tag regexp ‘spring|spring|java’  (采用正则表达式)
+就会将标签带有springboot或者spring或者java的问题全部找到
+
+在某个问题页面中，只要拿到当前问题的id然后去掉这个问题即可
+
+具体操作都在questionController QuestionSevice 的selectRelated()方法里面
