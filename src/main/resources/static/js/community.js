@@ -8,6 +8,9 @@ function post() {
     comment2target(questionId,1,content);
 }
 
+/*
+重构函数
+*/
 function comment2target(targetId,type,content) {
     if(!content){
         alert("不能回复空内容~~~~~~");
@@ -139,5 +142,27 @@ function collapseComment(e){
         }
 
     }
+}
 
+/*
+提交标签到标签input
+*/
+function selectTag(e) {
+    //拿到现在tag输入框中的值
+    var value = e.getAttribute("data-tag");
+    var previous = $("#tag").val();
+    if(previous.split(',').indexOf(value) == -1) {
+        //previous存在了要加入的tag，就不再添加
+        //如果有标签了，就再拼接一个
+        //若没有就直接加上
+        if (previous) {
+            $("#tag").val(previous + ',' + value);
+        } else {
+            $("#tag").val(value);
+        }
+    }
+}
+
+function showSelectTag() {
+    $("#select-tag").show();
 }
