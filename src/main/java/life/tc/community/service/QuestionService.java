@@ -76,14 +76,14 @@ public class QuestionService {
          questionDTO.setUser(user);
          questionDTOlist.add(questionDTO);
         }
-        paginationDTO.setQuestions(questionDTOlist);
+        paginationDTO.setData(questionDTOlist);
 
         return paginationDTO;
     }
 
     //profile页面的问题显示
     public PaginationDTO list(long userId, Integer page, Integer size) {
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
 
         //问题所有的数量
 
@@ -106,7 +106,7 @@ public class QuestionService {
             page = 1;
         }
         if(page > totalPage) {
-            page = paginationDTO.getTotalPage();
+            page = totalPage;
         }
         paginationDTO.setPagination(totalPage,page);
 
@@ -128,7 +128,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOlist.add(questionDTO);
         }
-        paginationDTO.setQuestions(questionDTOlist);
+        paginationDTO.setData(questionDTOlist);
 
         return paginationDTO;
     }
@@ -186,6 +186,8 @@ public class QuestionService {
         questionExtMapper.incView(question);
     }
 
+
+    //实现显示标签
     public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
         if(StringUtils.isBlank(queryDTO.getTag())){
             return new ArrayList<>();

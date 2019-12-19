@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 //此对象包括了页面的元素，包括问题，页码
-public class PaginationDTO {
-
-    private List<QuestionDTO> questions;
+public class PaginationDTO<T> {
+    private List<T> data;
     //是否有向前的按钮
     private boolean showPrevious;
     private boolean showFirstPage;
@@ -72,36 +71,12 @@ public class PaginationDTO {
         }
     }
 
-    public Integer getTotalPage() {
-        return totalPage;
+    public List<T> getData() {
+        return data;
     }
 
-    public void setTotalPage(Integer totalPage) {
-        this.totalPage = totalPage;
-    }
-
-    public List<Integer> getPages() {
-        return pages;
-    }
-
-    public void setPages(List<Integer> pages) {
-        this.pages = pages;
-    }
-
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
-    }
-
-    public List<QuestionDTO> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<QuestionDTO> questions) {
-        this.questions = questions;
+    public void setData(List<T> data) {
+        this.data = data;
     }
 
     public boolean isShowPrevious() {
@@ -136,5 +111,27 @@ public class PaginationDTO {
         this.showEndPage = showEndPage;
     }
 
+    public Integer getTotalPage() {
+        return totalPage;
+    }
 
+    public void setTotalPage(Integer totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public List<Integer> getPages() {
+        return pages;
+    }
+
+    public void setPages(List<Integer> pages) {
+        this.pages = pages;
+    }
 }

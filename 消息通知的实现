@@ -1,0 +1,6 @@
+建立了Notification的表
+
+首先在每个评论的板块都添加一个消息（主要是在CommentService的insert()里面）
+
+然后在之前写profile就写好的通知板块里面加上通知列表，然他能够点击进入相应的问题
+就又加了一个notificationController，写法和之前写点/question/{id}是一样的
