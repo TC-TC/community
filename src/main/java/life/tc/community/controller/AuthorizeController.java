@@ -61,6 +61,7 @@ public class AuthorizeController {
             //将生成的token放入cooike中，在访问首页时，将cooike中token的信息拿到放入数据库中检查是否登录成功
             response.addCookie(new Cookie("token",token));
 
+            //返回重定向的页面，就是刷新过一次以后的当前页面
             return "redirect:/";
         }else{
             //登陆失败，重新登陆

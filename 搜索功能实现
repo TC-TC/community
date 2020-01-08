@@ -1,0 +1,7 @@
+搜索功能的是实现是在index页面当中的，所以在indexController加一个search
+
+在list函数里面添加一个参数search，然后用跟标签索引一样的办法，正则表达式来索引搜索问题
+
+同时还需要再index.html里面改一下page的href，给他添加一个search，不然当search结果要分页的时候
+
+点击下一页他就会跳转到主页的下一页了。

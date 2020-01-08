@@ -73,6 +73,7 @@ public class PublishController {
             return "publish";
         }
 
+        //判断是否为非法标签
         String invaild = TagCache.Invaild(tag);
         if(StringUtils.isNotBlank(invaild)){
             model.addAttribute("error","标签不能为非法标签 "+invaild);

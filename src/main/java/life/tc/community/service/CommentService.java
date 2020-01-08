@@ -93,6 +93,10 @@ public class CommentService {
 
     private void createNotify(Comment comment,Long receiver,String notifierName,String outerTitle,NotificationTypeEnum notificationType,Long outerId){
         //回复评论时增加一条通知
+        //如果是自己回复自己的评论，就不用添加此条评论
+        if(receiver == comment.getCommentator()){
+            return ;
+        }
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(notificationType.getType());

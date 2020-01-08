@@ -3,6 +3,7 @@ package life.tc.community.service;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.util.QDecoderStream;
 import life.tc.community.dto.PaginationDTO;
 import life.tc.community.dto.QuestionDTO;
+import life.tc.community.dto.QuestionQueryDTO;
 import life.tc.community.exception.CustomErrorCode;
 import life.tc.community.exception.CustomizeException;
 import life.tc.community.exception.ICustomizeErrorCode;
@@ -36,11 +37,26 @@ public class QuestionService {
     private QuestionExtMapper questionExtMapper;
 
     //index页面的问题显示
-    public PaginationDTO list(Integer page, Integer size) {
+    public PaginationDTO list(String search,Integer page, Integer size) {
+
+        if(search == ""){
+            search = null;
+        }
+        //如果search不为空
+        if(StringUtils.isNotBlank(search) ){
+            //将搜索以空格分隔放进tags中
+            String[] tags  = StringUtils.split(search," ");
+
+            //对这些tags再用|拼接再给search(因为正则表达式里面要右“|”来表示或)
+            search = Arrays.stream(tags).collect(Collectors.joining("|"));
+        }
+
         PaginationDTO paginationDTO = new PaginationDTO();
 
         //问题所有的数量
-        Integer totalCount =  (int)questionMapper.countByExample(new QuestionExample());
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        Integer totalCount = questionExtMapper.countBySearch( questionQueryDTO);
 
         //计算总共需要多少页
         Integer totalPage;
@@ -51,21 +67,31 @@ public class QuestionService {
             totalPage = totalCount / size + 1;
         }
 
+        //page为当前所在页面
         if(page <1){
             page = 1;
         }
         if(page > totalPage) {
-            page = paginationDTO.getTotalPage();
+            page = totalPage;
         }
 
         paginationDTO.setPagination(totalPage,page);
 
         //size*(page-1),offset为每页第一个问题的编号
-        Integer offset = size * (page-1);
+        Integer offset;
+        if(page == 0) {
+            offset = 0;
+        }else{
+            offset = size * (page-1);
+        }
+
         QuestionExample example = new QuestionExample();
         example.setOrderByClause("gmt_create desc");
+        //将page和offset放入questionQueryDTO中
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setPage(offset);
         //List<Question> questions = questionMapper.list(offset,size);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example,new RowBounds(offset,size));
+        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
 
         List<QuestionDTO> questionDTOlist = new ArrayList<>();
         for(Question question : questions){

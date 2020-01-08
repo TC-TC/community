@@ -4,4 +4,4 @@
 
 3.将list()函数中添加上这两个参数，传到questionSevice里面，首先在questionMapper中得到问题的总数，
      通过总数totalCount，当前的页码page,每页的个数size来判断前端页码样式的各种显示
-     (加了一个错误处理，但页面小于1，自动为1，大于totalPage，就为totalPage)
+     (加了一个错误处理，当页面小于1，自动为1，大于totalPage，就为totalPage)

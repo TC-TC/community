@@ -1,0 +1,9 @@
+1.调用github官方给的接口去获取token   （在接口上面需要加一个参数redirect_uri 到时候会自动跳转到这个uri上面）
+
+2.github返回的参数中有code 我们就需要提前写好接口来接受code。
+
+3.再在服务端使用post请求调用access_token接口 （在这里传递上之前获取到的code）
+
+4.然后github就会返回一个access_token
+
+5.通过这个access_token可以再次调用github的API，这样就可以拿到user信息
